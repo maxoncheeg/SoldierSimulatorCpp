@@ -27,12 +27,21 @@
     <ClInclude Include="morale.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="squad.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="fight_result.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="soldier.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Source.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="squad.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

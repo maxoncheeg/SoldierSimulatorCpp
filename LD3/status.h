@@ -3,5 +3,5 @@
 enum Status {
 	InRanks, // в строю
 	Wounded, // ранен
-	Dead
+	Dead // мёртв
 };

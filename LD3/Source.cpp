@@ -1,134 +1,116 @@
 #include <iostream>
 #include <cstdlib>
+#include <Windows.h>
 
 #include "soldier.h"
+#include "squad.h"
 
 using namespace std;
 
-void printSoldierState(Soldier* soldier) {
-	cout << "Моральный дух: " << soldier->getTextMorale() << endl;
-	cout << "Звание: " << soldier->getRank() << endl;
-	cout << "Состояние: " << soldier->getTextStatus() << endl;
-}
-
-string getSoldierSmile(Morale morale) {
-	switch (morale)
-	{
-	case Deserter: return "/--";
-	case Drooping: return " ~~";
-	case Neutral: return " __";
-	case Raised: return "\\__";
-	case Inspired: return "\\\\_";
-	case Adrenaline: return " \\O";
-	}
-}
-
 int main() {
+
 	setlocale(0, "Rus");
-
 	srand(time(NULL));
-	Soldier* soldier = new Soldier("Настоящая", "Американская", "Жаба", 1);
-	int choose = 0, status;
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 
-	do {
-		cout << "\t    __________" << endl;
-		cout << "\t   /          \\" << endl;
-		cout << "\t  /            \\" << endl;
-		cout << "\t  |    ________/" << endl;
-		cout << "\t  \\___/   o  |" << endl;
-		cout << "\t    |         >" << endl;
-		cout << "\t    \\   " << getSoldierSmile(soldier->getMorale()) << "  | " << endl;
-		cout << "\t     \\______/" << endl << endl;
+	Squad squad;
+	int choice = 0, enemiesAmount = 0, id = 0;
+	bool isExit = false;
 
+	string name, surname, patronymic;
 
-		cout << "\t\tСОЛДАТ" << endl;
-		cout << "Имя: " << soldier->getFullName() << endl;
-		cout << "Номер: " << soldier->getId() << endl;
-		cout << "Количество побед: " << soldier->getVictoriesAmount() << endl;
-		cout << "Количество поражений: " << soldier->getDefeatsAmount() << endl;
-		printSoldierState(soldier);
+	do
+	{
+		cout << "\tНЕСОКРУШИМЫЙ ОТРЯД" << endl;
+		cout << "Кол-во человек в отряде: " << squad.getSoldiersAmount() << endl;
 
-		cout << "\t\tДЕЙСТВИЯ" << endl;
-		cout << "1: Повысить в звании" << endl;
-		cout << "2: Понизить в звании" << endl;
-		cout << "3: Вылечить солдата" << endl;
-		cout << "4: Одержать победу" << endl;
-		cout << "5: Учавствовать в поражении" << endl;
-		cout << "0: Выйти" << endl;
-		
+		if (squad.getSoldiersAmount() != 0)
+			squad.printFormation();
+
+		cout << endl << "Действия: " << endl;
+		cout << " 1 - показать весь отряд." << endl;
+		cout << " 2 - количество побед." << endl;
+		cout << " 3 - количество поражений." << endl;
+		cout << " 4 - пойти в бой." << endl;
+		cout << " 5 - добавить солдата." << endl;
+		cout << " 6 - исключить солдата." << endl;
+		cout << " 0 - выход." << endl;
+
 		cout << "Ваш выбор: ";
-		cin >> choose;
-
+		cin >> choice;
 		system("cls");
-		switch (choose) {
-		case 1:
 
-			if (soldier->raiseRank())
-				cout << "Ранг солдата был повышен!" << endl;
-			else
-				cout << "У солдата уже максимальный ранг!" << endl;
+		switch (choice) {
+		case 1:
+			cout << "Отряд:" << endl;
+			squad.print();
 			break;
 		case 2:
-			if (soldier->lowerRank())
-				cout << "Ранг солдата был понижен!" << endl;
-			else
-				cout << "Ниже некуда!" << endl;
+			cout << "Кол-во побед: " << squad.getVictories() << endl;
 			break;
 		case 3:
-			if (soldier->heal())
-				cout << "Солдат был вылечен!" << endl;
-			else
-				cout << "Солдат мёртв." << endl;
+			cout << "Кол-во поражений: " << squad.getDefeats() << endl;
 			break;
 		case 4:
-			status = rand() % 3;
+		{
+			cout << "Количество противников: ";
+			cin >> enemiesAmount;
+			if (enemiesAmount < 0) enemiesAmount = 0;
 
-			cout << "Солдат одержал победу";
-			if (status == 2)
-			{
-				cout << " и уцелел." << endl;
-				soldier->doVictory(InRanks);
-			}
-			else if (status == 1)
-			{
-				cout << ", но был ранен." << endl;
-				soldier->doVictory(Wounded);
-			}
-			else
-			{
-				cout << ", но умер." << endl;
-				soldier->doVictory(Dead);
-			}
+			cout << "УЧАСТИЕ В БОЕ: " << endl;
 
-			break;
+			FightResult result = squad.goIntoBattle(enemiesAmount);
+			cout << "Результат: " << (result.isVictory ? "ПОБЕДА" : "ПОРАЖЕНИЕ") << endl;
+			cout << "Ранено в отряде: " << result.woundedAmount << endl;
+			cout << "Погибло в отряде: " << result.diedAmount << endl;
+		}
+		break;
 		case 5:
-			status = rand() % 3;
+		{
+			cout << "Имя: ";
+			cin >> name;
 
-			cout << "Солдат понес поражение";
-			if (status == 2)
-			{
-				cout << ", но уцелел." << endl;
-				soldier->doVictory(InRanks);
+			cout << "Фамилия: ";
+			cin >> surname;
+
+			cout << "Отчество: ";
+			cin >> patronymic;
+
+			cout << "Порядковый номер: ";
+			cin >> id;
+			if (id < 0) id = 0;
+
+			bool res = false;
+			try {
+				res = squad.addSoldier(new Soldier(name, surname, patronymic, id));
 			}
-			else if (status == 1)
-			{
-				cout << ", и был ранен." << endl;
-				soldier->doVictory(Wounded);
+			catch (invalid_argument exception) {
+				cout << exception.what() << endl;
 			}
+
+			if (res)
+				cout << "Cолдат успешно добавлен" << endl;
 			else
-			{
-				cout << " и умер." << endl;
-				soldier->doVictory(Dead);
-			}
+				cout << "Cолдат не был добавлен" << endl;
+			break;
+		}
+		case 6:
+			cout << "Введите порядковый номер: ";
+			cin >> id;
+
+			if (squad.removeSoldier(id))
+				cout << "Cолдат успешно удален" << endl;
+			else
+				cout << "Cолдат не был удален" << endl;
+			break;
+		case 0:
+			isExit = true;
 			break;
 		default:
 			break;
 		}
-
-
-	} while (soldier->getStatus() != Dead || choose == 0);
-
-	delete soldier;
+	} while (!isExit);
 
 	return EXIT_SUCCESS;
 }

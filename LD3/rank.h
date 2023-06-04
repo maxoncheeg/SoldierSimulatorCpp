@@ -1,9 +1,9 @@
 #pragma once
 
 enum Rank {
-	Private,
-	Sergeant,
-	Lieutenant,
-	Major,
-	Colonel
+	Private, // –яƒќ¬ќ…
+	Sergeant, // сержант
+	Lieutenant, // лейтенант
+	Major, //майор
+	Colonel // полковник
 };

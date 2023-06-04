@@ -28,7 +28,7 @@ string Soldier::getFullName()
 	return format("{} {} {}", _name, _surname, _patronymic);
 }
 
-string Soldier::getRank()
+string Soldier::getTextRank()
 {
 	switch (_rank)
 	{
@@ -95,6 +95,8 @@ bool Soldier::raiseRank()
 
 	if (_morale != Adrenaline)
 		_morale = (Morale)(_morale + 1);
+
+	return true;
 }
 
 bool Soldier::lowerRank()
@@ -105,6 +107,8 @@ bool Soldier::lowerRank()
 
 	if (_morale != Deserter)
 		_morale = (Morale)(_morale - 1);
+
+	return true;
 }
 
 void Soldier::doVictory(Status status)
