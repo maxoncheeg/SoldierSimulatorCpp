@@ -128,14 +128,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="fight_result.h" />
     <ClInclude Include="morale.h" />
     <ClInclude Include="rank.h" />
     <ClInclude Include="soldier.h" />
+    <ClInclude Include="squad.h" />
     <ClInclude Include="status.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="soldier.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="squad.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

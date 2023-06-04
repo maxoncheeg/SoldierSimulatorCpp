@@ -20,9 +20,10 @@ private:
 	Rank _rank;
 	Status _status;
 public:
-	Soldier(string, string, string, unsigned int);
+	Soldier(string name, string surname, string patronymic, unsigned int id);
+
 	string getFullName();
-	string getRank();
+	string getTextRank();
 	string getTextStatus();
 	string getTextMorale();
 	Morale getMorale();
@@ -30,6 +31,7 @@ public:
 	unsigned int getId();
 	int getVictoriesAmount();
 	int getDefeatsAmount();
+
 	bool raiseRank();
 	bool lowerRank();
 	void doVictory(Status);
